@@ -7,6 +7,7 @@ import {
     Delete,
     UseInterceptors,
     UploadedFiles,
+    Query,
 } from '@nestjs/common';
 import { ObjectId } from 'mongoose';
 import { CreateCommentDto } from './dto/create-comment.dto';
@@ -38,8 +39,13 @@ export class TrackController {
     }
 
     @Get()
-    getAll() {
-        return this.trackService.getAll();
+    getAll(@Query('count') count: number, @Query('offset') offset: number) {
+        return this.trackService.getAll(count, offset);
+    }
+
+    @Get('/search')
+    search(@Query('query') query: string) {
+        return this.trackService.search(query);
     }
 
     @Get(':id')
