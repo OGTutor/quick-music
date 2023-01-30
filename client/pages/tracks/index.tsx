@@ -13,9 +13,9 @@ const Index = () => {
             artist: 'Some artist',
             text: 'Some text',
             listens: 5,
-            audio: 'http://localhost:5000/audio/d920cdee-b625-438c-a1b1-296dc0054caf.mp3',
+            audio: 'http://localhost:5000/audio/8d0e3bc-317a-4aa2-b29a-4bae912ca1ad.mp3',
             picture:
-                'http://localhost:5000/image/5f89ff94-53b8-4ab4-bd67-280ae0fedb73.jpg',
+                'http://localhost:5000/image/91233ffb-3620-4826-986e-34d77c3ea97d.jpg',
             comments: [],
         },
         {
@@ -26,7 +26,7 @@ const Index = () => {
             listens: 10,
             audio: 'http://localhost:5000/audio/d920cdee-b625-438c-a1b1-296dc0054caf.mp3',
             picture:
-                'http://localhost:5000/image/5f89ff94-53b8-4ab4-bd67-280ae0fedb73.jpg',
+                'http://localhost:5000/image/a5143eb5-a405-4ff1-8e07-92719cbcb11f.jpg',
             comments: [],
         },
         {
@@ -37,7 +37,7 @@ const Index = () => {
             listens: 15,
             audio: 'http://localhost:5000/audio/edbe989b-f7d6-435f-9693-de613736c0e4.mp3',
             picture:
-                'http://localhost:5000/image/74346875-9031-411b-b92a-6ffb6fed473c.jpg',
+                'http://localhost:5000/image/60140842-eec8-4be9-9dac-3a27129c45f5.jpg',
             comments: [],
         },
     ];

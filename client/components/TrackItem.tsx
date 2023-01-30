@@ -3,6 +3,8 @@ import { FC } from 'react';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { IconButton } from '@mui/material';
 import PauseIcon from '@mui/icons-material/Pause';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { useRouter } from 'next/router';
 
 interface TrackItemProps {
     track: ITrack;
@@ -10,12 +12,16 @@ interface TrackItemProps {
 }
 
 const TrackItem: FC<TrackItemProps> = ({ track, active = false }) => {
+    const router = useRouter();
+
     return (
         <div className="bg-white">
             <div className="mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
                 <div className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
                     <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-w-7 xl:aspect-h-8">
-                        <button>
+                        <button
+                            onClick={() => router.push(`/tracks/${track._id}`)}
+                        >
                             <img
                                 src={track.picture}
                                 alt="picture"
@@ -24,14 +30,29 @@ const TrackItem: FC<TrackItemProps> = ({ track, active = false }) => {
                         </button>
                     </div>
                     <div className="flex flex-col">
-                        <p className="mt-1 text-lg font-medium text-gray-900">
-                            {track.name}
-                        </p>
+                        <button
+                            onClick={() => router.push(`/tracks/${track._id}`)}
+                            className="mr-auto"
+                        >
+                            <p className="mt-1 text-lg font-medium text-gray-900">
+                                {track.name}
+                            </p>
+                        </button>
                         <p className="mt-1 text-lg font-medium text-gray-900">
                             {track.artist}
                         </p>
-                        <IconButton>
-                            {active ? <PauseIcon /> : <PlayArrowIcon />}
+                        <div>
+                            <IconButton>
+                                {active ? <PauseIcon /> : <PlayArrowIcon />}
+                            </IconButton>
+                        </div>
+                        {active && <div>02:42 / 03:22</div>}
+                    </div>
+                    <div>
+                        <IconButton
+                            style={{ marginLeft: 'auto', marginTop: 'auto' }}
+                        >
+                            <DeleteIcon />
                         </IconButton>
                     </div>
                 </div>
