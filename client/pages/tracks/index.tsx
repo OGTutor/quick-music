@@ -46,7 +46,7 @@ const Index = () => {
             <div className="container-none mx-auto bg-white">
                 <main>
                     <div className="relative px-6 lg:px-8">
-                        <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
+                        <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-12">
                             <div
                                 className="hidden sm:mb-8 sm:flex sm:justify-center"
                                 onClick={() => router.push('/tracks/create')}
@@ -88,7 +88,9 @@ const Index = () => {
                                     </a>
                                 </div>
                             </div>
-                            <TrackList tracks={tracks} />
+                            <div className="py-12">
+                                <TrackList tracks={tracks} />
+                            </div>
                         </div>
                     </div>
                 </main>

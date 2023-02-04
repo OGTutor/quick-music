@@ -25,7 +25,7 @@ const TrackPage = () => {
                 <div className="pt-6">
                     <div className="relative mt-6">
                         <button
-                            className="absolute m-0 left-1/2 py-2 px-6 border rounded-lg shadow-md bg-violet-400 hover:bg-violet-500 active:bg-violet-600 focus:outline-none focus:ring focus:ring-violet-300"
+                            className="rounded-md bg-indigo-600 py-2 px-6 text-base font-semibold leading-7 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 absolute m-0 left-1/2 border"
                             onClick={() => router.push('/tracks')}
                         >
                             Track list
@@ -100,7 +100,7 @@ const TrackPage = () => {
                                 </div>
                             </div>
                             <button
-                                className="ml-1 mt-2 py-2 px-6 border rounded-lg shadow-md bg-violet-400 hover:bg-violet-500 active:bg-violet-600 focus:outline-none focus:ring focus:ring-violet-300"
+                                className="rounded-md bg-indigo-600 ml-1 mt-2 py-2 px-6 text-white shadow-md hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                                 type="submit"
                             >
                                 Comment

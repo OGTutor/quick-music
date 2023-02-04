@@ -1,3 +1,4 @@
+import Player from '@/components/Player';
 import { FC } from 'react';
 import Navbar from '../components/Navbar';
 
@@ -10,6 +11,7 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
         <>
             <Navbar />
             {children}
+            <Player />
         </>
     );
 };
