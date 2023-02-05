@@ -1,26 +1,51 @@
+import { useState } from 'react';
 import MainLayout from '@/layouts/MainLayout';
 import { ITrack } from '@/types/track';
 import { useRouter } from 'next/router';
 import React from 'react';
+import { GetServerSideProps } from 'next';
+import axios from 'axios';
 
-const TrackPage = () => {
-    const track: ITrack = {
-        _id: '3',
-        name: 'Track 3',
-        artist: 'Some artist',
-        text: 'Some text',
-        listens: 15,
-        audio: 'http://localhost:5000/audio/edbe989b-f7d6-435f-9693-de613736c0e4.mp3',
-        picture:
-            'http://localhost:5000/image/60140842-eec8-4be9-9dac-3a27129c45f5.jpg',
-        comments: [
-            { _id: 'asdasdad', username: 'danil', text: 'aasdsadasdasd' },
-        ],
-    };
+const TrackPage = ({ serverTrack }) => {
+    const [track, setTrack] = useState<ITrack>(serverTrack);
+    const [data, setData] = useState({ username: '', text: '' });
     const router = useRouter();
 
+    const handleChange = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    ) => {
+        setData((prevState) => ({
+            ...prevState,
+            [e.target.name]: e.target.value,
+        }));
+    };
+
+    const addComment = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        try {
+            const response = await axios.post(
+                'http://localhost:5000/tracks/comment',
+                {
+                    username: data.username,
+                    text: data.text,
+                    trackId: track._id,
+                },
+            );
+            setTrack({
+                ...track,
+                comments: [...track.comments, response.data],
+            });
+            setData((prevState) => ({ ...prevState, username: '', text: '' }));
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     return (
-        <MainLayout>
+        <MainLayout
+            title={'Quick Music - ' + track.name + ' - ' + track.artist}
+            keywords={'Music, artists, ' + track.name + ', ' + track.artist}
+        >
             <div className="bg-white">
                 <div className="pt-6">
                     <div className="relative mt-6">
@@ -35,7 +60,7 @@ const TrackPage = () => {
                         <div className="aspect-w-3 aspect-h-4 hidden overflow-hidden rounded-lg lg:block">
                             <img
                                 className="max-w-md max-h-xl rounded-lg left-auto border shadow-md"
-                                src={track.picture}
+                                src={'http://localhost:5000/' + track.picture}
                                 alt="picture"
                             />
                         </div>
@@ -70,9 +95,11 @@ const TrackPage = () => {
                                             Your name
                                         </label>
                                         <input
+                                            value={data.username}
+                                            onChange={handleChange}
                                             type="text"
-                                            name="name"
-                                            id="name"
+                                            name="username"
+                                            id="username"
                                             autoComplete="given-name"
                                             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                         />
@@ -87,8 +114,10 @@ const TrackPage = () => {
                                             </label>
                                             <div className="mt-1">
                                                 <textarea
-                                                    id="comment"
-                                                    name="comment"
+                                                    value={data.text}
+                                                    onChange={handleChange}
+                                                    id="text"
+                                                    name="text"
                                                     rows={9}
                                                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm resize-none"
                                                     placeholder="Some comment..."
@@ -101,22 +130,45 @@ const TrackPage = () => {
                             </div>
                             <button
                                 className="rounded-md bg-indigo-600 ml-1 mt-2 py-2 px-6 text-white shadow-md hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                                type="submit"
+                                onClick={addComment}
                             >
                                 Comment
                             </button>
                         </form>
-                    </div>
-                    <div className="mx-auto max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8">
                         <div className="aspect-w-3 aspect-h-4 hidden overflow-hidden rounded-lg lg:block text-right">
-                            {track.comments.map((comment) => (
-                                <div>
-                                    <div className="text-xl font-bold">
-                                        {comment.username}
+                            <div className="lg:flex-col columns-1 items-end justify-end w-full">
+                                {track.comments.map((comment) => (
+                                    <div className="mb-7 p-6 rounded bg-gradient-to-r from-purple-300 to-purple-50 shadow-md shadow-cyan-500/50">
+                                        <div className="flex items-center border-gray-200 pb-6">
+                                            <div className="flex items-start justify-between w-full">
+                                                <div className="pl-3 w-full">
+                                                    <p className="text-xl font-medium leading-5 text-gray-800">
+                                                        {comment.username}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div className="mt-2">{comment.text}</div>
-                                </div>
-                            ))}
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="aspect-w-3 aspect-h-4 overflow-hidden rounded-lg font-bold">
+                            <div className="lg:flex-col columns-1 items-end justify-end w-full">
+                                {track.comments.map((comment) => (
+                                    <div className="mb-7 bg-white p-6 rounded bg-gradient-to-r from-purple-50 to-purple-300 shadow-md shadow-cyan-500/50">
+                                        <div className="flex items-center border-gray-200 pb-6">
+                                            <div className="flex items-start justify-between w-full">
+                                                <div className="pl-3 w-full">
+                                                    <p className="text-sm leading-5 text-gray-500">
+                                                        {comment.text}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -126,3 +178,10 @@ const TrackPage = () => {
 };
 
 export default TrackPage;
+
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+    const response = await axios.get(
+        'http://localhost:5000/tracks/' + params?.id,
+    );
+    return { props: { serverTrack: response.data } };
+};

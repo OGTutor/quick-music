@@ -1,52 +1,62 @@
 import TrackList from '@/components/TrackList';
+import { useTypedSelector } from '@/hooks/useTypedSelector';
 import MainLayout from '@/layouts/MainLayout';
-import { ITrack } from '@/types/track';
+import { useDispatch } from 'react-redux';
+import { NextThunkDispatch } from '@/store';
+import { searchTracks } from '@/store/actions-creators/track';
 import DownloadIcon from '@mui/icons-material/Download';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 
 const Index = () => {
     const router = useRouter();
-    const tracks: ITrack[] = [
-        {
-            _id: '1',
-            name: 'Track 1',
-            artist: 'Some artist',
-            text: 'Some text',
-            listens: 5,
-            audio: 'http://localhost:5000/audio/f853997c-20cc-412b-b3d4-e4d8f9d61adc.mp3',
-            picture:
-                'http://localhost:5000/image/21537811-05d3-44b3-8356-47291935f4c5.jpg',
-            comments: [],
-        },
-        {
-            _id: '2',
-            name: 'Track 2',
-            artist: 'Some artist',
-            text: 'Some text',
-            listens: 10,
-            audio: 'http://localhost:5000/audio/387e259e-a7b4-48b8-b897-ee2fd4758be1.mp3',
-            picture:
-                'http://localhost:5000/image/319b7bf6-2eeb-4507-88e1-98fd02712c57.jpg',
-            comments: [],
-        },
-        {
-            _id: '3',
-            name: 'Track 3',
-            artist: 'Some artist',
-            text: 'Some text',
-            listens: 15,
-            audio: 'http://localhost:5000/audio/edbe989b-f7d6-435f-9693-de613736c0e4.mp3',
-            picture:
-                'http://localhost:5000/image/60140842-eec8-4be9-9dac-3a27129c45f5.jpg',
-            comments: [],
-        },
-    ];
+    const { tracks, error } = useTypedSelector((state) => state.track);
+    const [query, setQuery] = useState<string>('');
+    const dispatch = useDispatch() as NextThunkDispatch;
+    const [timer, setTimer] = useState(0);
+
+    const search = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        setQuery(e.target.value);
+        if (timer) {
+            clearTimeout(timer);
+        }
+        setTimer(
+            setTimeout(async () => {
+                await dispatch(await searchTracks(e.target.value));
+            }, 500) as unknown as number,
+        );
+    };
+
+    if (error) {
+        return (
+            <MainLayout>
+                <h1>{error}</h1>
+            </MainLayout>
+        );
+    }
+
     return (
-        <MainLayout>
+        <MainLayout title={'Tracks list - Quick Music'}>
             <div className="container-none mx-auto bg-white">
                 <main>
                     <div className="relative px-6 lg:px-8">
                         <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-12">
+                            <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
+                                <div className="aspect-w-4 aspect-h-1 overflow-hidden rounded-lg font-bold">
+                                    <div className="col-span-6 sm:col-span-3 mt-10 p-2">
+                                        <input
+                                            value={query}
+                                            onChange={search}
+                                            type="text"
+                                            name="search"
+                                            id="search"
+                                            autoComplete="given-name"
+                                            placeholder="Name of the track"
+                                            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
                             <div
                                 className="hidden sm:mb-8 sm:flex sm:justify-center"
                                 onClick={() => router.push('/tracks/create')}
@@ -72,23 +82,8 @@ const Index = () => {
                                     Elit sunt amet fugiat veniam occaecat fugiat
                                     aliqua.
                                 </p>
-                                <div className="mt-10 flex items-center justify-center gap-x-6">
-                                    <a
-                                        href="#"
-                                        className="rounded-md bg-indigo-600 px-3.5 py-1.5 text-base font-semibold leading-7 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                                    >
-                                        Get started
-                                    </a>
-                                    <a
-                                        href="#"
-                                        className="text-base font-semibold leading-7 text-gray-900"
-                                    >
-                                        Learn more{' '}
-                                        <span aria-hidden="true">→</span>
-                                    </a>
-                                </div>
                             </div>
-                            <div className="py-12">
+                            <div className="py-24">
                                 <TrackList tracks={tracks} />
                             </div>
                         </div>
