@@ -5,6 +5,7 @@ import { IconButton } from '@mui/material';
 import PauseIcon from '@mui/icons-material/Pause';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useRouter } from 'next/router';
+import { useActions } from '@/hooks/useActions';
 
 interface TrackItemProps {
     track: ITrack;
@@ -13,6 +14,12 @@ interface TrackItemProps {
 
 const TrackItem: FC<TrackItemProps> = ({ track, active = false }) => {
     const router = useRouter();
+    const { playTrack, pauseTrack, setActiveTrack } = useActions();
+
+    const play = () => {
+        setActiveTrack(track);
+        playTrack();
+    };
 
     return (
         <div className="bg-white">
@@ -42,7 +49,7 @@ const TrackItem: FC<TrackItemProps> = ({ track, active = false }) => {
                             {track.artist}
                         </p>
                         <div>
-                            <IconButton>
+                            <IconButton onClick={play}>
                                 {active ? <PauseIcon /> : <PlayArrowIcon />}
                             </IconButton>
                         </div>

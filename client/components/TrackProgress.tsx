@@ -11,7 +11,7 @@ const TrackProgress: FC<TrackProgressProps> = ({ left, right, onChange }) => {
         <div className="flex">
             <input
                 type="range"
-                min={left}
+                min={0}
                 max={right}
                 value={left}
                 onChange={onChange}

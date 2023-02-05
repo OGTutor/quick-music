@@ -13,9 +13,9 @@ const Index = () => {
             artist: 'Some artist',
             text: 'Some text',
             listens: 5,
-            audio: 'http://localhost:5000/audio/8d0e3bc-317a-4aa2-b29a-4bae912ca1ad.mp3',
+            audio: 'http://localhost:5000/audio/f853997c-20cc-412b-b3d4-e4d8f9d61adc.mp3',
             picture:
-                'http://localhost:5000/image/91233ffb-3620-4826-986e-34d77c3ea97d.jpg',
+                'http://localhost:5000/image/21537811-05d3-44b3-8356-47291935f4c5.jpg',
             comments: [],
         },
         {
@@ -24,9 +24,9 @@ const Index = () => {
             artist: 'Some artist',
             text: 'Some text',
             listens: 10,
-            audio: 'http://localhost:5000/audio/d920cdee-b625-438c-a1b1-296dc0054caf.mp3',
+            audio: 'http://localhost:5000/audio/387e259e-a7b4-48b8-b897-ee2fd4758be1.mp3',
             picture:
-                'http://localhost:5000/image/a5143eb5-a405-4ff1-8e07-92719cbcb11f.jpg',
+                'http://localhost:5000/image/319b7bf6-2eeb-4507-88e1-98fd02712c57.jpg',
             comments: [],
         },
         {
